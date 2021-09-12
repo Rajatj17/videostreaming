@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "SFTP_HOST": "ec2-15-207-223-120.ap-south-1.compute.amazonaws.com",
+                "SFTP_USERNAME": "ec2-user",
+                "SFTP_PRIVATE_KEY_LOCATION": "/Users/rajat/Downloads/MacBook_M1.cer"
+            },
+            "program": "${workspaceFolder}/index.js"
+        }
+    ]
+}
