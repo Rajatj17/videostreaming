@@ -1,5 +1,3 @@
-const CameraController = require("./camera.controller");
-
 module.exports = {
-    CameraController,
+    CameraController: require("./camera.controller")
 }

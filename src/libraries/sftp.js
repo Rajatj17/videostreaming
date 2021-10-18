@@ -41,37 +41,43 @@ module.exports = class Sftp {
     }
 
     async TransferFile({ localFile, remoteFile }) {
-        const client = await this.GetConnection();
+        const client = await this.GetConnection({});
 
         return client.fastPut(localFile, remoteFile);
     }
 
-    async CreateDirectory({ directoryPath, createRecursiveDir = true }) {
-        const client = await this.GetConnection();
+    async CreateDirectoryIfDoesNotExist({ directoryPath, createRecursiveDir = true }) {
+        const client = await this.GetConnection({});
 
-        return client.mkdir(directoryPath, createRecursiveDir)
+        const doesExist = await this.CheckIfFileExists({ filePath: directoryPath });
+        
+        if (!doesExist) {
+            return client.mkdir(directoryPath, createRecursiveDir)
+        }
+
+        return;
     }
 
     async ChangePermission({ filePath, permissionCode }) {
-        const client = await this.GetConnection();
+        const client = await this.GetConnection({});
 
         return client.chmod(filePath, permissionCode)
     }
 
     async TransferDirectory({ localDir, remoteDir }) {
-        const client = await this.GetConnection();
+        const client = await this.GetConnection({});
 
         return client.uploadDir(localDir, remoteDir);
     }
 
     async ListFilesInDirectory({ directoryPath }) {
-        const client = await this.GetConnection();
+        const client = await this.GetConnection({});
 
         return client.list(directoryPath);
     }
 
     async CheckIfFileExists({ filePath }) {
-        const client = await this.GetConnection();
+        const client = await this.GetConnection({});
 
         return client.exists(filePath);
     }

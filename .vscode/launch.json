@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "env": {
-                "SFTP_HOST": "ec2-15-207-223-120.ap-south-1.compute.amazonaws.com",
+                "SFTP_HOST": "ec2-65-0-93-107.ap-south-1.compute.amazonaws.com",
                 "SFTP_USERNAME": "ec2-user",
                 "SFTP_PRIVATE_KEY_LOCATION": "/Users/rajat/Downloads/MacBook_M1.cer"
             },

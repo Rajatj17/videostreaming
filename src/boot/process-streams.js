@@ -1,4 +1,4 @@
-const { Runner, Sftp } = require('../libraries')
+const { Runner } = require('../libraries')
 
 const Ips = ['rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov'];
 
@@ -17,10 +17,7 @@ module.exports = class ProcessStreams {
             return runnnerInst.Init(cmd);
         });
 
-        // const client = await new Sftp().GetConnection({});
-
-        // console.log('Client', client.uploadDir('./', '/home/ec2-user'));
-        console.log('Processes', processes);
+        console.log(processes);
     }
 
     /**
@@ -43,7 +40,7 @@ module.exports = class ProcessStreams {
      */
     prepareCommand({
         ip, 
-        folderPath,
+        foldePath = 'src/storage',
         protocol = 'tcp', 
         segmentTime = 60,
         segmentFormat = 'mp4',
@@ -52,7 +49,7 @@ module.exports = class ProcessStreams {
         const command = `ffmpeg -rtsp_transport ${protocol} \
         -i "${ip}" -f segment -segment_time ${segmentTime} \
         -segment_format ${segmentFormat} -reset_timestamps 1 \
-        -strftime 1 -c:v copy -map 0 "${folderPath}/Cam-${camNum}-%s.mp4" \
+        -strftime 1 -c:v copy -map 0 "${foldePath}/%Y-%m-%d-%H-%M-Cam${camNum}-%s.mp4" \
         `;
 
         return command;
