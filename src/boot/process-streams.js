@@ -1,6 +1,9 @@
 const { Runner } = require('../libraries')
 
-const Ips = ['rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov'];
+const Ips = [
+    'rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov',
+    'rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov'
+];
 
 module.exports = class ProcessStreams {
     
@@ -11,8 +14,8 @@ module.exports = class ProcessStreams {
         const allIPs = this.getAllIps();
         const runnnerInst = new Runner();
 
-        const processes = allIPs.map(ip => {
-            const cmd = this.prepareCommand({ ip });
+        const processes = allIPs.map((ip, index) => {
+            const cmd = this.prepareCommand({ ip, camNum: index });
 
             return runnnerInst.Init(cmd);
         });

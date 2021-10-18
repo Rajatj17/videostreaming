@@ -16,7 +16,8 @@ module.exports = class TransferStreams {
 
         let i = 0;
         for (const file of files) {
-            if (i === files.length - 1) continue;
+            const numberOfCameras = process.env.CAMERA_NO || 2;
+            if (i >= files.length - numberOfCameras) continue;
 
             const { folderStructure, fileName } = createFolderStructure(file);
             checkIfFileAndCurrentMinCollide(file);
