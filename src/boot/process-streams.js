@@ -1,8 +1,16 @@
-const { Runner } = require('../libraries')
+const { Runner } = require('../../src/libraries')
 
 const Ips = [
-    'rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov',
-    'rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov'
+    {
+        ip: 'rtsp://192.168.88.15/mainstream',
+        assetName: 'Asset_Cam_Internal_192_168_88_15',
+        zone: 'Zone_1'
+    // },
+    // {
+    //     ip: 'rtsp://192.168.88.16/mainstream',
+    //     assetName: 'Asset_Cam_Internal_192_168_88_16',
+    //     zone: 'Zone_2'
+    },
 ];
 
 module.exports = class ProcessStreams {
@@ -14,8 +22,8 @@ module.exports = class ProcessStreams {
         const allIPs = this.getAllIps();
         const runnnerInst = new Runner();
 
-        const processes = allIPs.map((ip, index) => {
-            const cmd = this.prepareCommand({ ip, camNum: index });
+        const processes = allIPs.map((ipObject) => {
+            const cmd = this.prepareCommand({ ip: ipObject.ip, assetName: ipObject.assetName });
 
             return runnnerInst.Init(cmd);
         });
@@ -45,14 +53,15 @@ module.exports = class ProcessStreams {
         ip, 
         foldePath = 'src/storage',
         protocol = 'tcp', 
-        segmentTime = 60,
+        segmentTime = 5,
         segmentFormat = 'mp4',
-        camNum = 1
+        zoneName = 'Zone_0',
+        assetName = 1
     }) {
         const command = `ffmpeg -rtsp_transport ${protocol} \
         -i "${ip}" -f segment -segment_time ${segmentTime} \
         -segment_format ${segmentFormat} -reset_timestamps 1 \
-        -strftime 1 -c:v copy -map 0 "${foldePath}/%Y-%m-%d-%H-%M-Cam${camNum}-%s.mp4" \
+        -strftime 1 -c:v copy -map 0 -an "${foldePath}/${zoneName}-${assetName}-Year_%Y-Month_%m-Date_%d-Hr_%H-Min_%M-Sec_%S-Ts_%s.mp4" \
         `;
 
         return command;

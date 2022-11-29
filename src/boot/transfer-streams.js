@@ -20,9 +20,10 @@ module.exports = class TransferStreams {
             if (i >= files.length - numberOfCameras) continue;
 
             const { folderStructure, fileName } = createFolderStructure(file);
-            checkIfFileAndCurrentMinCollide(file);
-            await sftpInst.CreateDirectoryIfDoesNotExist({ directoryPath: folderStructure });
-            await sftpInst.TransferFile({ localFile: `src/storage/${file}`, remoteFile: `/home/ec2-user/${folderStructure}/${fileName}` })
+            console.log(folderStructure, fileName);
+            // checkIfFileAndCurrentMinCollide(file);
+            // await sftpInst.CreateDirectoryIfDoesNotExist({ directoryPath: folderStructure });
+            await sftpInst.TransferUsingS3Sdk({ localFile: `src/storage/${file}`, remoteFile: `${folderStructure}/${fileName}`, })
                         
             this.DeleteFile({ path: `src/storage/${file}` });
 

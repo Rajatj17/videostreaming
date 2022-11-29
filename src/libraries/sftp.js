@@ -1,5 +1,6 @@
 const Client = require('ssh2-sftp-client');
 const fs = require('fs');
+const { S3 } = require('aws-sdk');
 
 const { sftpConfig } = require('../../config');
 
@@ -43,7 +44,35 @@ module.exports = class Sftp {
     async TransferFile({ localFile, remoteFile }) {
         const client = await this.GetConnection({});
 
-        return client.fastPut(localFile, remoteFile);
+        return client.put(localFile, remoteFile);
+    }
+
+    async TransferUsingS3Sdk({ localFile, remoteFile }) {
+        try {    
+            const fileKey = `${remoteFile}`;
+        
+            const s3Client = new S3({
+                region: process.env.AWS_REGION || 'ap-south-1',
+                credentials: {
+                  accessKeyId: process.env.ACCESS_KEY,
+                  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+                }
+              });
+    
+            s3Client.upload({
+              Bucket: process.env.S3_BUCKET,
+              Key: fileKey,
+              Body: fs.createReadStream(localFile),
+            },  function (err, data) {
+              if (err) {
+                console.log("Error", err);
+              } if (data) {
+                console.log("Upload Success", data.Location);
+              }
+            })
+          } catch (e) {
+            console.log(e);
+          }
     }
 
     async CreateDirectoryIfDoesNotExist({ directoryPath, createRecursiveDir = true }) {

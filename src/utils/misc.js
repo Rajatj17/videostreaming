@@ -11,16 +11,18 @@ const createFolderStructure = (file) => {
 
     if (splittedString.length < 7) return;
 
-    const year = splittedString[0];
-    const month = splittedString[1];
-    const day = splittedString[2];
-    const hour = splittedString[3];
-    const minute = splittedString[4];
-    const assetName = splittedString[5];
-    const timestamp = splittedString[6];
+    const zone = splittedString[0];
+    const assetName = splittedString[1];
+    const year = splittedString[2];
+    const month = splittedString[3];
+    const day = splittedString[4];
+    const hour = splittedString[5];
+    const minute = splittedString[6];
+    const second = splittedString[7];
+    const timestamp = splittedString[8];
 
     return {
-        folderStructure: `${year}/${month}/${day}/${hour}/${minute}`,
+        folderStructure: `${zone}/${assetName}/${year}/${month}/${day}/${hour}/${minute}/${second}`,
         fileName: `${assetName}-${timestamp}`
     }
 };
