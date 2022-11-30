@@ -7,10 +7,10 @@ const TransferStreams = require('./boot/transfer-streams');
 
 app.use(express.urlencoded({ extended: true }));
 
-new ProcessStreams().init();
-schedule.scheduleJob('*/2 * * * *', function(){
-    console.log(`Starting transfer of streams @ ${(new Date()).toUTCString()}`);
-    new TransferStreams().Init();
-});
+new TransferStreams().Init();
+// schedule.scheduleJob('*/2 * * * *', function(){
+//     console.log(`Starting transfer of streams @ ${(new Date()).toUTCString()}`);
+    // new TransferStreams().Init();
+// });
 
 module.exports = app;

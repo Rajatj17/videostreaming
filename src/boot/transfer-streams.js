@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { promisify } = require('util');
+const config = require('../../config');
 
 const { Sftp } = require('../libraries');
 const { createFolderStructure, checkIfFileAndCurrentMinCollide } = require('../utils/misc');
@@ -19,11 +20,10 @@ module.exports = class TransferStreams {
             const numberOfCameras = process.env.CAMERA_NO || 2;
             if (i >= files.length - numberOfCameras) continue;
 
-            const { folderStructure, fileName } = createFolderStructure(file);
-            console.log(folderStructure, fileName);
             // checkIfFileAndCurrentMinCollide(file);
-            // await sftpInst.CreateDirectoryIfDoesNotExist({ directoryPath: folderStructure });
-            await sftpInst.TransferUsingS3Sdk({ localFile: `src/storage/${file}`, remoteFile: `${folderStructure}/${fileName}`, })
+            const folderStructure = config.app.remoteFileTransaferPath
+            await sftpInst.CreateDirectoryIfDoesNotExist({ directoryPath: folderStructure });
+            await sftpInst.TransferFile({ localFile: `src/storage/${file}`, remoteFile: `${folderStructure}/${file}`, })
                         
             this.DeleteFile({ path: `src/storage/${file}` });
 

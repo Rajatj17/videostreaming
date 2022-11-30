@@ -32,13 +32,19 @@ module.exports = class Sftp {
             }
         }
 
-        await sftp.connect({
-            host: sftpConfig.host,
-            username: sftpConfig.username,
-            privateKey: fs.readFileSync(sftpConfig.sftpPrivateKeyLocation)
-        });
+        try {
+            await sftp.connect({
+                host: sftpConfig.host,
+                username: sftpConfig.username,
+                privateKey: fs.readFileSync(sftpConfig.sftpPrivateKeyLocation),
+            })
 
-        return sftp;
+            return sftp;
+
+        } catch (error) {
+            console.log('Errors', error);
+            throw error;
+        }
     }
 
     async TransferFile({ localFile, remoteFile }) {

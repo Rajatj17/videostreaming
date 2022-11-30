@@ -1,2 +1,8 @@
 node_modules/
 storage/
+
+temp/
+
+sftp_key*
+
+.env
